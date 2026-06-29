@@ -26,13 +26,17 @@ class FieldElement:
         raise NotImplementedError("Implement __sub__")
 
     def __mul__(self, other):
-        raise NotImplementedError("Implement __mul__")
+        return self.__class__((self.num * other.num) % self.prime, self.prime)
 
     def __pow__(self, exponent):
-        raise NotImplementedError("Implement __pow__")
+        n = exponent % (self.prime - 1)
+        num = pow(self.num, n, self.prime)
+        return self.__class__(num, self.prime)
 
     def __truediv__(self, other):
-        raise NotImplementedError("Implement __truediv__")
+        if other.num == 0:
+            raise ZeroDivisionError("Cannot divide by zero")
+        return self * (other ** (self.prime - 2))
 
 
 class FieldElementTest(TestCase):
